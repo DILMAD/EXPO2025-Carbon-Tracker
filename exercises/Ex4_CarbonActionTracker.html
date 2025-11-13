@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Action Tracker</title>
+    <style>
+        /* ===== CSS Variables for Theming ===== */
+        :root {
+            /* Light Theme */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #e8f5e9;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --accent-primary: #4CAF50;
+            --accent-secondary: #81C784;
+            --border-color: #e0e0e0;
+            --error-color: #f44336;
+            --warning-color: #FF9800;
+            --info-color: #2196F3;
+            
+            /* Emissions Category Colors */
+            --color-transport: #2196F3;
+            --color-home: #FF9800;
+            --color-food: #4CAF50;
+            --color-digital: #9C27B0;
+            --color-consumption: #795548;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme */
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #1a3a1a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --accent-primary: #66BB6A;
+            --accent-secondary: #4CAF50;
+            --border-color: #333333;
+            --error-color: #ef5350;
+            --warning-color: #FFA726;
+            --info-color: #42A5F5;
+        }
+
+        /* ===== Base Styles ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ===== Header ===== */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px 0;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--accent-primary);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== Theme Toggle ===== */
+        .theme-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+
+        #themeToggle {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 6px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        #themeToggle:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        /* ===== Navigation Tabs ===== */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab[data-unlocked="false"] {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .tab[data-unlocked="false"]::after {
+            content: "🔒";
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 0.7rem;
+        }
+
+        .tab:hover:not([data-unlocked="false"]) {
+            background: var(--accent-secondary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .tab.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .tab-number {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .tab.active .tab-number {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ===== Reset Button ===== */
+        .reset-container {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        .reset-btn {
+            background: var(--warning-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #F57C00;
+        }
+
+        /* ===== Phases ===== */
+        .phase {
+            display: none;
+        }
+
+        .phase.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .phase h2 {
+            color: var(--accent-primary);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        /* ===== Progress Indicator ===== */
+        .form-progress {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .form-progress .label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .form-progress .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--bg-primary);
+            border-radius: 4px;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+
+        .form-progress .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .form-progress .percentage {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--accent-primary);
+        }
+
+        /* ===== Form Sections ===== */
+        .form-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-section h3 {
+            color: var(--accent-primary);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 0.9rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .form-group input.invalid,
+        .form-group select.invalid {
+            border-color: var(--error-color);
+        }
+
+        .validation-message {
+            display: block;
+            color: var(--error-color);
+            font-size: 0.8rem;
+            margin-top: 3px;
+            min-height: 16px;
+        }
+
+        /* ===== Sticky Button Container ===== */
+        .button-container {
+            position: sticky;
+            bottom: 0;
+            background: var(--bg-primary);
+            padding: 15px 0;
+            margin-top: 20px;
+            border-top: 2px solid var(--accent-primary);
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            text-align: center;
+        }
+
+        /* ===== Scroll Indicator ===== */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            z-index: 99;
+            display: none;
+        }
+
+        .scroll-indicator.visible {
+            display: block;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        .scroll-indicator::after {
+            content: '▼';
+            margin-left: 8px;
+            display: inline-block;
+            animation: arrowBounce 1.5s infinite;
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(5px);
+            }
+        }
+
+        /* ===== Buttons ===== */
+        .primary-btn,
+        .secondary-btn {
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .primary-btn {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #388E3C;
+        }
+
+        .secondary-btn {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .secondary-btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+        }
+
+        /* ===== Phase 2: Results Display ===== */
+        .results-summary {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .total-emissions {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .total-emissions .label {
+            display: block;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 6px;
+        }
+
+        .total-emissions .value {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .total-emissions .unit {
+            display: block;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* ===== Visualizations ===== */
+        .visualization-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .visualization-section h3 {
+            color: var(--accent-primary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        /* Pie Chart (Conic Gradient) */
+        .pie-chart-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .pie-chart {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .pie-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        .legend-label {
+            flex: 1;
+            color: var(--text-primary);
+        }
+
+        .legend-value {
+            font-weight: bold;
+            color: var(--accent-primary);
+        }
+
+        /* Comparison Bars */
+        .comparison-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .comparison-bar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .comparison-bar-label {
+            min-width: 100px;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .comparison-bar-container {
+            flex: 1;
+            height: 35px;
+            background: var(--bg-primary);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comparison-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 6px;
+            transition: width 0.8s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .comparison-bar.user {
+            background: linear-gradient(90deg, #2196F3, #64B5F6);
+        }
+
+        .comparison-bar.target {
+            background: linear-gradient(90deg, var(--accent-primary), #66BB6A);
+        }
+
+        /* Paris Agreement Status */
+        .paris-status {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--accent-primary);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .paris-status.aligned {
+            background: #E8F5E9;
+            border-color: #4CAF50;
+        }
+
+        .paris-status.close {
+            background: #FFF3E0;
+            border-color: #FF9800;
+        }
+
+        .paris-status.above {
+            background: #FFEBEE;
+            border-color: #f44336;
+        }
+
+        [data-theme="dark"] .paris-status.aligned {
+            background: #1B5E20;
+        }
+
+        [data-theme="dark"] .paris-status.close {
+            background: #E65100;
+        }
+
+        [data-theme="dark"] .paris-status.above {
+            background: #B71C1C;
+        }
+
+        .paris-status .icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .paris-status .message {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ===== Phase 3: Actions List ===== */
+        .live-feedback {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .feedback-item {
+            text-align: center;
+        }
+
+        .feedback-item .label {
+            display: block;
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+
+        .feedback-item .value {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .feedback-item .value.projected {
+            color: #FFF59D;
+        }
+
+        .feedback-item .value.reduction {
+            color: #A5D6A7;
+        }
+
+        .paris-mini {
+            flex-basis: 100%;
+            margin-top: 8px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .paris-indicator {
+            font-size: 0.9rem;
+        }
+
+        /* Action Categories */
+        .action-category {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .action-category h3 {
+            color: var(--accent-primary);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .action-item {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .action-item:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .action-item.selected {
+            border-color: var(--accent-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .action-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .action-details {
+            flex: 1;
+        }
+
+        .action-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .action-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .action-impact {
+            color: var(--accent-primary);
+            font-weight: bold;
+        }
+
+        .action-cost {
+            color: var(--warning-color);
+        }
+
+        /* ===== Phase 4: Summary ===== */
+        .before-after {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .comparison-item {
+            margin-bottom: 15px;
+        }
+
+        .comparison-item .label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .bar-container {
+            position: relative;
+            height: 40px;
+            background: var(--bg-primary);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .bar {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.8s ease-out;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .before-bar {
+            background: linear-gradient(90deg, #f44336, #ef5350);
+        }
+
+        .after-bar {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .bar-label {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-primary);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* Waterfall Chart */
+        .waterfall-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .waterfall-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .waterfall-label {
+            min-width: 130px;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .waterfall-bar-container {
+            flex: 1;
+            height: 25px;
+            position: relative;
+        }
+
+        .waterfall-bar {
+            height: 100%;
+            background: var(--accent-primary);
+            border-radius: 4px;
+            transition: width 0.6s ease-out;
+        }
+
+        .waterfall-value {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-primary);
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        /* Summary Text */
+        .summary-text {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-text h3 {
+            color: var(--accent-primary);
+            margin-bottom: 12px;
+        }
+
+        .summary-text pre {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: var(--text-primary);
+        }
+
+        /* ===== Loading & Error ===== */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-primary);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--accent-primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-message {
+            display: none;
+            background: var(--error-color);
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        /* ===== Responsive Design ===== */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                width: 100%;
+            }
+
+            .pie-chart {
+                width: 200px;
+                height: 200px;
+            }
+
+            .total-emissions .value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dark Mode Toggle -->
+    <div class="theme-toggle">
+        <button id="themeToggle" onclick="toggleTheme()">
+            <span id="themeIcon">☀️</span>
+            <span id="themeLabel">Light</span>
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🌍 Carbon Action Tracker</h1>
+            <p class="subtitle">Measure Your Impact, Plan Your Future</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab active" id="tab1" onclick="switchTab(1)" data-unlocked="true">
+                <span class="tab-number">1</span>
+                <span class="tab-label">Input</span>
+            </button>
+            <button class="tab" id="tab2" onclick="switchTab(2)" data-unlocked="false">
+                <span class="tab-number">2</span>
+                <span class="tab-label">Current</span>
+            </button>
+            <button class="tab" id="tab3" onclick="switchTab(3)" data-unlocked="false">
+                <span class="tab-number">3</span>
+                <span class="tab-label">Actions</span>
+            </button>
+            <button class="tab" id="tab4" onclick="switchTab(4)" data-unlocked="false">
+                <span class="tab-number">4</span>
+                <span class="tab-label">Plan</span>
+            </button>
+        </nav>
+
+        <!-- Reset Button -->
+        <div class="reset-container">
+            <button class="reset-btn" onclick="resetApp()">
+                🔄 Reset
+            </button>
+        </div>
+
+        <!-- Phase 1: Input Data -->
+        <div id="phase1" class="phase active">
+            <h2>📊 Enter Your Data</h2>
+            
+            <!-- Progress Indicator -->
+            <div class="form-progress">
+                <span class="label">Form Progress:</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="formProgress" style="width: 0%"></div>
+                </div>
+                <span class="percentage" id="formPercentage">0%</span>
+            </div>
+            
+            <!-- Region -->
+            <div class="form-section">
+                <h3>🌍 Location</h3>
+                <div class="form-group">
+                    <label for="region">Region:</label>
+                    <select id="region" onchange="validateInput('region'); updateProgress()">
+                        <option value="">Select...</option>
+                        <option value="USA">USA</option>
+                        <option value="Europe">Europe</option>
+                        <option value="China">China</option>
+                        <option value="India">India</option>
+                        <option value="Brazil">Brazil</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Norway">Norway</option>
+                        <option value="Global">Global</option>
+                    </select>
+                    <span class="validation-message" id="region-error"></span>
+                </div>
+            </div>
+
+            <!-- Transport -->
+            <div class="form-section">
+                <h3>🚗 Transportation</h3>
+                
+                <div class="form-group">
+                    <label for="commuteMode">Commute Mode:</label>
+                    <select id="commuteMode" onchange="validateInput('commuteMode'); updateProgress()">
+                        <option value="">Select...</option>
+                        <option value="Walking">Walking</option>
+                        <option value="Cycling">Cycling</option>
+                        <option value="Bus">Bus</option>
+                        <option value="Train_Rail">Train</option>
+                        <option value="Car_Gasoline">Car (Gas)</option>
+                        <option value="Car_Electric_BEV">Car (Electric)</option>
+                    </select>
+                    <span class="validation-message" id="commuteMode-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="dailyCommuteKm">Daily Commute (km, one-way):</label>
+                    <input type="number" id="dailyCommuteKm" min="0" step="0.1" 
+                           placeholder="15" oninput="validateInput('dailyCommuteKm'); updateProgress()">
+                    <span class="validation-message" id="dailyCommuteKm-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="commuteDays">Days per Year:</label>
+                    <input type="number" id="commuteDays" min="0" max="365" 
+                           placeholder="250" oninput="validateInput('commuteDays'); updateProgress()">
+                    <span class="validation-message" id="commuteDays-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="domesticFlights">Domestic Flights/Year:</label>
+                    <input type="number" id="domesticFlights" min="0" 
+                           placeholder="2" oninput="validateInput('domesticFlights'); updateProgress()">
+                    <span class="validation-message" id="domesticFlights-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="avgDomesticFlightKm">Avg Flight Distance (km):</label>
+                    <input type="number" id="avgDomesticFlightKm" min="0" 
+                           placeholder="1500" oninput="validateInput('avgDomesticFlightKm'); updateProgress()">
+                    <span class="validation-message" id="avgDomesticFlightKm-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="internationalFlights">International Flights/Year:</label>
+                    <input type="number" id="internationalFlights" min="0" 
+                           placeholder="1" oninput="validateInput('internationalFlights'); updateProgress()">
+                    <span class="validation-message" id="internationalFlights-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="avgInternationalFlightKm">Avg Flight Distance (km):</label>
+                    <input type="number" id="avgInternationalFlightKm" min="0" 
+                           placeholder="8000" oninput="validateInput('avgInternationalFlightKm'); updateProgress()">
+                    <span class="validation-message" id="avgInternationalFlightKm-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="otherTravelKm">Other Travel/Week (km):</label>
+                    <input type="number" id="otherTravelKm" min="0" 
+                           placeholder="50" oninput="validateInput('otherTravelKm'); updateProgress()">
+                    <span class="validation-message" id="otherTravelKm-error"></span>
+                </div>
+            </div>
+
+            <!-- Home -->
+            <div class="form-section">
+                <h3>🏠 Home Energy</h3>
+                
+                <div class="form-group">
+                    <label for="monthlyElectricityKWh">Electricity (kWh/month):</label>
+                    <input type="number" id="monthlyElectricityKWh" min="0" 
+                           placeholder="900" oninput="validateInput('monthlyElectricityKWh'); updateProgress()">
+                    <span class="validation-message" id="monthlyElectricityKWh-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="monthlyNaturalGasKWh">Natural Gas (kWh/month):</label>
+                    <input type="number" id="monthlyNaturalGasKWh" min="0" 
+                           placeholder="300" oninput="validateInput('monthlyNaturalGasKWh'); updateProgress()">
+                    <span class="validation-message" id="monthlyNaturalGasKWh-error"></span>
+                </div>
+            </div>
+
+            <!-- Food -->
+            <div class="form-section">
+                <h3>🍽️ Diet</h3>
+                <div class="form-group">
+                    <label for="dietType">Diet Type:</label>
+                    <select id="dietType" onchange="validateInput('dietType'); updateProgress()">
+                        <option value="">Select...</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="vegetarian">Vegetarian</option>
+                        <option value="balanced">Balanced</option>
+                        <option value="meat-heavy">Meat-Heavy</option>
+                    </select>
+                    <span class="validation-message" id="dietType-error"></span>
+                </div>
+            </div>
+
+            <!-- Digital -->
+            <div class="form-section">
+                <h3>💻 Digital</h3>
+                
+                <div class="form-group">
+                    <label for="streamingHoursPerDay">Streaming (hrs/day):</label>
+                    <input type="number" id="streamingHoursPerDay" min="0" step="0.1" 
+                           placeholder="2" oninput="validateInput('streamingHoursPerDay'); updateProgress()">
+                    <span class="validation-message" id="streamingHoursPerDay-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="aiQueriesPerDay">AI Queries/Day:</label>
+                    <input type="number" id="aiQueriesPerDay" min="0" 
+                           placeholder="10" oninput="validateInput('aiQueriesPerDay'); updateProgress()">
+                    <span class="validation-message" id="aiQueriesPerDay-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="cloudStorageGB">Cloud Storage (GB):</label>
+                    <input type="number" id="cloudStorageGB" min="0" 
+                           placeholder="100" oninput="validateInput('cloudStorageGB'); updateProgress()">
+                    <span class="validation-message" id="cloudStorageGB-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="videoCallHoursPerWeek">Video Calls (hrs/week):</label>
+                    <input type="number" id="videoCallHoursPerWeek" min="0" step="0.1" 
+                           placeholder="5" oninput="validateInput('videoCallHoursPerWeek'); updateProgress()">
+                    <span class="validation-message" id="videoCallHoursPerWeek-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="emailsPerDay">Emails/Day:</label>
+                    <input type="number" id="emailsPerDay" min="0" 
+                           placeholder="50" oninput="validateInput('emailsPerDay'); updateProgress()">
+                    <span class="validation-message" id="emailsPerDay-error"></span>
+                </div>
+            </div>
+
+            <!-- Consumption -->
+            <div class="form-section">
+                <h3>🛍️ Shopping</h3>
+                
+                <div class="form-group">
+                    <label for="shoppingFrequency">Frequency:</label>
+                    <select id="shoppingFrequency" onchange="validateInput('shoppingFrequency'); updateProgress()">
+                        <option value="">Select...</option>
+                        <option value="minimal">Minimal</option>
+                        <option value="moderate">Moderate</option>
+                        <option value="frequent">Frequent</option>
+                    </select>
+                    <span class="validation-message" id="shoppingFrequency-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="clothingPurchases">Clothing Items/Year:</label>
+                    <input type="number" id="clothingPurchases" min="0" 
+                           placeholder="10" oninput="validateInput('clothingPurchases'); updateProgress()">
+                    <span class="validation-message" id="clothingPurchases-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="electronicsPurchases">Electronics/Year:</label>
+                    <input type="number" id="electronicsPurchases" min="0" 
+                           placeholder="1" oninput="validateInput('electronicsPurchases'); updateProgress()">
+                    <span class="validation-message" id="electronicsPurchases-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="furniturePurchases">Furniture/Year:</label>
+                    <input type="number" id="furniturePurchases" min="0" 
+                           placeholder="0" oninput="validateInput('furniturePurchases'); updateProgress()">
+                    <span class="validation-message" id="furniturePurchases-error"></span>
+                </div>
+            </div>
+
+            <!-- Sticky Button Container -->
+            <div class="button-container">
+                <button class="primary-btn" onclick="calculateFootprint()">
+                    Calculate My Footprint →
+                </button>
+            </div>
+        </div>
+
+        <!-- Phase 2: Current Footprint -->
+        <div id="phase2" class="phase">
+            <h2>📊 Your Current Footprint</h2>
+            
+            <div class="results-summary">
+                <div class="total-emissions">
+                    <span class="label">Total Annual Emissions</span>
+                    <span class="value" id="totalEmissions">0.0</span>
+                    <span class="unit">tons CO₂e/year</span>
+                </div>
+            </div>
+
+            <div class="visualization-section">
+                <h3>Breakdown</h3>
+                <div class="pie-chart-container">
+                    <div class="pie-chart" id="pieChart"></div>
+                    <div class="pie-legend" id="pieLegend"></div>
+                </div>
+            </div>
+
+            <div class="visualization-section">
+                <h3>Comparison</h3>
+                <div class="comparison-bars" id="comparisonBars"></div>
+            </div>
+
+            <div class="paris-status" id="parisStatus"></div>
+
+            <div class="button-container">
+                <button class="primary-btn" onclick="exploreActions()">
+                    Explore Actions →
+                </button>
+            </div>
+        </div>
+
+        <!-- Phase 3: Select Actions -->
+        <div id="phase3" class="phase">
+            <h2>🎯 Select Actions</h2>
+            
+            <div class="live-feedback" id="liveFeedback">
+                <div class="feedback-item">
+                    <span class="label">Current:</span>
+                    <span class="value" id="currentTotal">0.0 tons</span>
+                </div>
+                <div class="feedback-item">
+                    <span class="label">Projected:</span>
+                    <span class="value projected" id="projectedTotal">0.0 tons</span>
+                </div>
+                <div class="feedback-item">
+                    <span class="label">Reduction:</span>
+                    <span class="value reduction" id="reductionAmount">0.0 tons (0%)</span>
+                </div>
+                <div class="feedback-item paris-mini" id="parisMini">
+                    <span class="paris-indicator">Select actions to see impact</span>
+                </div>
+            </div>
+
+            <div id="actionsList"></div>
+
+            <div class="button-container">
+                <button class="primary-btn" onclick="viewSummary()">
+                    View Summary →
+                </button>
+            </div>
+        </div>
+
+        <!-- Phase 4: Summary -->
+        <div id="phase4" class="phase">
+            <h2>📋 Action Plan</h2>
+            
+            <div class="before-after">
+                <div class="comparison-item">
+                    <span class="label">Before</span>
+                    <div class="bar-container">
+                        <div class="bar before-bar" id="beforeBar"></div>
+                        <span class="bar-label" id="beforeLabel">0.0 tons</span>
+                    </div>
+                </div>
+                <div class="comparison-item">
+                    <span class="label">After</span>
+                    <div class="bar-container">
+                        <div class="bar after-bar" id="afterBar"></div>
+                        <span class="bar-label" id="afterLabel">0.0 tons</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="visualization-section">
+                <h3>Impact by Action</h3>
+                <div class="waterfall-chart" id="waterfallChart"></div>
+            </div>
+
+            <div class="summary-text">
+                <h3>Summary</h3>
+                <pre id="summaryText"></pre>
+            </div>
+
+            <div class="button-container">
+                <button class="secondary-btn" onclick="switchTab(1)">
+                    ← New Calculation
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Calculating...</p>
+        </div>
+
+        <!-- Error -->
+        <div class="error-message" id="errorMessage"></div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator" onclick="scrollToBottom()">
+        Scroll for more
+    </div>
+
+    <script type="text/javascript">
+        // ===== Global Variables =====
+        let htmlComponent = null;
+        let currentPhase = 1;
+        let currentFootprint = null;
+        let availableActions = [];
+        let selectedActionIDs = [];
+        let impactData = null;
+
+        // ===== Required Setup Function =====
+        function setup(component) {
+            htmlComponent = component;
+            window.htmlComponent = component;
+            
+            console.log("Carbon Action Tracker initialized");
+            
+            // Event listeners
+            htmlComponent.addEventListener("FootprintCalculated", handleFootprintCalculated);
+            htmlComponent.addEventListener("ActionsLoaded", handleActionsLoaded);
+            htmlComponent.addEventListener("ImpactCalculated", handleImpactCalculated);
+            htmlComponent.addEventListener("SummaryGenerated", handleSummaryGenerated);
+            htmlComponent.addEventListener("AppReset", handleAppReset);
+            htmlComponent.addEventListener("Error", handleError);
+            
+            loadTheme();
+            setDefaultValues();
+            updateProgress();
+        }
+
+        // ===== Theme =====
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('carbonTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeButton(savedTheme);
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('carbonTheme', newTheme);
+            updateThemeButton(newTheme);
+        }
+
+        function updateThemeButton(theme) {
+            document.getElementById('themeIcon').textContent = theme === 'dark' ? '🌙' : '☀️';
+            document.getElementById('themeLabel').textContent = theme === 'dark' ? 'Dark' : 'Light';
+        }
+
+        // ===== Navigation =====
+        function switchTab(phase) {
+            const tab = document.getElementById('tab' + phase);
+            if (tab.getAttribute('data-unlocked') === 'false') return;
+            
+            document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            
+            document.getElementById('phase' + phase).classList.add('active');
+            tab.classList.add('active');
+            currentPhase = phase;
+            
+            // Hide scroll indicator when switching tabs
+            updateScrollIndicator();
+        }
+
+        function unlockTab(phase) {
+            document.getElementById('tab' + phase).setAttribute('data-unlocked', 'true');
+        }
+
+        // ===== Form Progress Tracking =====
+        function updateProgress() {
+            const fields = [
+                'region', 'commuteMode', 'dailyCommuteKm', 'commuteDays',
+                'domesticFlights', 'avgDomesticFlightKm', 'internationalFlights',
+                'avgInternationalFlightKm', 'otherTravelKm', 'monthlyElectricityKWh',
+                'monthlyNaturalGasKWh', 'dietType', 'streamingHoursPerDay',
+                'aiQueriesPerDay', 'cloudStorageGB', 'videoCallHoursPerWeek',
+                'emailsPerDay', 'shoppingFrequency', 'clothingPurchases',
+                'electronicsPurchases', 'furniturePurchases'
+            ];
+            
+            let filledCount = 0;
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field && field.value && field.value !== '') {
+                    filledCount++;
+                }
+            });
+            
+            const percentage = Math.round((filledCount / fields.length) * 100);
+            const progressFill = document.getElementById('formProgress');
+            const progressLabel = document.getElementById('formPercentage');
+            
+            if (progressFill) {
+                progressFill.style.width = percentage + '%';
+            }
+            if (progressLabel) {
+                progressLabel.textContent = percentage + '%';
+            }
+            
+            updateScrollIndicator();
+        }
+
+        // ===== Scroll Indicator Management =====
+        function updateScrollIndicator() {
+            const indicator = document.getElementById('scrollIndicator');
+            if (!indicator) return;
+            
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+            const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
+            
+            // Show indicator if user hasn't scrolled to bottom 80% and is in phase 1
+            if (scrollPercentage < 80 && currentPhase === 1) {
+                indicator.classList.add('visible');
+            } else {
+                indicator.classList.remove('visible');
+            }
+        }
+
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        // Listen for scroll events
+        window.addEventListener('scroll', updateScrollIndicator);
+
+        // ===== Defaults =====
+        function setDefaultValues() {
+            document.getElementById('region').value = 'USA';
+            document.getElementById('commuteMode').value = 'Car_Gasoline';
+            document.getElementById('dailyCommuteKm').value = '20';
+            document.getElementById('commuteDays').value = '250';
+            document.getElementById('domesticFlights').value = '2';
+            document.getElementById('avgDomesticFlightKm').value = '1500';
+            document.getElementById('internationalFlights').value = '1';
+            document.getElementById('avgInternationalFlightKm').value = '8000';
+            document.getElementById('otherTravelKm').value = '50';
+            document.getElementById('monthlyElectricityKWh').value = '900';
+            document.getElementById('monthlyNaturalGasKWh').value = '300';
+            document.getElementById('dietType').value = 'balanced';
+            document.getElementById('streamingHoursPerDay').value = '2';
+            document.getElementById('aiQueriesPerDay').value = '10';
+            document.getElementById('cloudStorageGB').value = '100';
+            document.getElementById('videoCallHoursPerWeek').value = '5';
+            document.getElementById('emailsPerDay').value = '50';
+            document.getElementById('shoppingFrequency').value = 'moderate';
+            document.getElementById('clothingPurchases').value = '10';
+            document.getElementById('electronicsPurchases').value = '1';
+            document.getElementById('furniturePurchases').value = '0';
+        }
+
+        // ===== Validation =====
+        function validateInput(fieldId) {
+            const field = document.getElementById(fieldId);
+            const error = document.getElementById(fieldId + '-error');
+            
+            let valid = true;
+            let msg = '';
+            
+            if (!field.value) {
+                valid = false;
+                msg = 'Required';
+            } else if (field.type === 'number') {
+                const val = parseFloat(field.value);
+                if (isNaN(val) || val < 0) {
+                    valid = false;
+                    msg = 'Must be ≥ 0';
+                }
+            }
+            
+            if (valid) {
+                field.classList.remove('invalid');
+                error.textContent = '';
+            } else {
+                field.classList.add('invalid');
+                error.textContent = msg;
+            }
+            
+            return valid;
+        }
+
+        function validateAll() {
+            const fields = [
+                'region', 'commuteMode', 'dailyCommuteKm', 'commuteDays',
+                'domesticFlights', 'avgDomesticFlightKm', 'internationalFlights',
+                'avgInternationalFlightKm', 'otherTravelKm', 'monthlyElectricityKWh',
+                'monthlyNaturalGasKWh', 'dietType', 'streamingHoursPerDay',
+                'aiQueriesPerDay', 'cloudStorageGB', 'videoCallHoursPerWeek',
+                'emailsPerDay', 'shoppingFrequency', 'clothingPurchases',
+                'electronicsPurchases', 'furniturePurchases'
+            ];
+            
+            let allValid = true;
+            fields.forEach(f => {
+                if (!validateInput(f)) allValid = false;
+            });
+            
+            return allValid;
+        }
+
+        // ===== Phase 1 =====
+        function calculateFootprint() {
+            if (!validateAll()) {
+                showError('Please fill all fields correctly');
+                return;
+            }
+            
+            const data = {
+                region: document.getElementById('region').value,
+                commuteMode: document.getElementById('commuteMode').value,
+                dailyCommuteKm: parseFloat(document.getElementById('dailyCommuteKm').value),
+                commuteDays: parseInt(document.getElementById('commuteDays').value),
+                domesticFlights: parseInt(document.getElementById('domesticFlights').value),
+                avgDomesticFlightKm: parseFloat(document.getElementById('avgDomesticFlightKm').value),
+                internationalFlights: parseInt(document.getElementById('internationalFlights').value),
+                avgInternationalFlightKm: parseFloat(document.getElementById('avgInternationalFlightKm').value),
+                otherTravelKm: parseFloat(document.getElementById('otherTravelKm').value),
+                monthlyElectricityKWh: parseFloat(document.getElementById('monthlyElectricityKWh').value),
+                monthlyNaturalGasKWh: parseFloat(document.getElementById('monthlyNaturalGasKWh').value),
+                dietType: document.getElementById('dietType').value,
+                streamingHoursPerDay: parseFloat(document.getElementById('streamingHoursPerDay').value),
+                aiQueriesPerDay: parseInt(document.getElementById('aiQueriesPerDay').value),
+                cloudStorageGB: parseFloat(document.getElementById('cloudStorageGB').value),
+                videoCallHoursPerWeek: parseFloat(document.getElementById('videoCallHoursPerWeek').value),
+                emailsPerDay: parseInt(document.getElementById('emailsPerDay').value),
+                shoppingFrequency: document.getElementById('shoppingFrequency').value,
+                clothingPurchases: parseInt(document.getElementById('clothingPurchases').value),
+                electronicsPurchases: parseInt(document.getElementById('electronicsPurchases').value),
+                furniturePurchases: parseInt(document.getElementById('furniturePurchases').value)
+            };
+            
+            showLoading(true);
+            htmlComponent.sendEventToMATLAB("CalculateFootprint", data);
+        }
+
+        function handleFootprintCalculated(event) {
+            currentFootprint = event.Data;
+            updateFootprintDisplay(currentFootprint);
+            unlockTab(2);
+            switchTab(2);
+            showLoading(false);
+        }
+
+        function updateFootprintDisplay(fp) {
+            document.getElementById('totalEmissions').textContent = fp.totalTons.toFixed(1);
+            createPieChart(fp);
+            createComparisonBars(fp);
+            updateParisStatus(fp);
+        }
+
+        function createPieChart(fp) {
+            const chart = document.getElementById('pieChart');
+            const legend = document.getElementById('pieLegend');
+            
+            const cats = [
+                { name: 'Transport', val: fp.transport, color: '#2196F3', icon: '🚗' },
+                { name: 'Home', val: fp.home, color: '#FF9800', icon: '🏠' },
+                { name: 'Food', val: fp.food, color: '#4CAF50', icon: '🍽️' },
+                { name: 'Digital', val: fp.digital, color: '#9C27B0', icon: '💻' },
+                { name: 'Consumption', val: fp.consumption, color: '#795548', icon: '🛍️' }
+            ];
+            
+            let angle = 0;
+            let stops = [];
+            
+            cats.forEach(c => {
+                const pct = (c.val / fp.total) * 100;
+                const next = angle + (pct * 3.6);
+                stops.push(c.color + ' ' + angle + 'deg ' + next + 'deg');
+                angle = next;
+            });
+            
+            chart.style.background = 'conic-gradient(' + stops.join(', ') + ')';
+            
+            legend.innerHTML = '';
+            cats.forEach(c => {
+                const pct = ((c.val / fp.total) * 100).toFixed(1);
+                const tons = (c.val / 1000).toFixed(2);
+                
+                const item = document.createElement('div');
+                item.className = 'legend-item';
+                item.innerHTML = '<div class="legend-color" style="background:' + c.color + '"></div>' +
+                    '<span class="legend-label">' + c.icon + ' ' + c.name + '</span>' +
+                    '<span class="legend-value">' + tons + 't (' + pct + '%)</span>';
+                legend.appendChild(item);
+            });
+        }
+
+        function createComparisonBars(fp) {
+            const container = document.getElementById('comparisonBars');
+            const comps = [
+                { label: 'You', val: fp.totalTons, cls: 'user' },
+                { label: 'Regional', val: fp.regionalAvg || 0, cls: '' },
+                { label: 'Global', val: fp.globalAvg, cls: '' },
+                { label: 'Paris', val: fp.parisTarget, cls: 'target' }
+            ];
+            
+            const max = Math.max(...comps.map(c => c.val));
+            container.innerHTML = '';
+            
+            comps.forEach(c => {
+                const width = (c.val / max) * 100;
+                const item = document.createElement('div');
+                item.className = 'comparison-bar-item';
+                item.innerHTML = '<div class="comparison-bar-label">' + c.label + '</div>' +
+                    '<div class="comparison-bar-container">' +
+                    '<div class="comparison-bar ' + c.cls + '" style="width:' + width + '%">' +
+                    c.val.toFixed(1) + 't</div></div>';
+                container.appendChild(item);
+            });
+        }
+
+        function updateParisStatus(fp) {
+            const div = document.getElementById('parisStatus');
+            div.className = 'paris-status ' + fp.parisStatus;
+            
+            let icon, msg;
+            if (fp.parisStatus === 'aligned') {
+                icon = '✅';
+                msg = "You're on track! Below 2.0 tons target.";
+            } else if (fp.parisStatus === 'close') {
+                icon = '⚠️';
+                msg = 'Close! Reduce by ' + (fp.totalTons - 2.0).toFixed(1) + ' tons.';
+            } else {
+                icon = '❌';
+                msg = (fp.totalTons - 2.0).toFixed(1) + ' tons above target.';
+            }
+            
+            div.innerHTML = '<div class="icon">' + icon + '</div><div class="message">' + msg + '</div>';
+        }
+
+        // ===== Phase 3 =====
+        function exploreActions() {
+            showLoading(true);
+            htmlComponent.sendEventToMATLAB("GetAvailableActions", {
+                region: currentFootprint.region || document.getElementById('region').value,
+                currentFootprint: currentFootprint
+            });
+        }
+
+        function handleActionsLoaded(event) {
+            availableActions = event.Data;
+            selectedActionIDs = [];
+            displayActions(availableActions);
+            updateLiveFeedback();
+            unlockTab(3);
+            switchTab(3);
+            showLoading(false);
+        }
+
+        function displayActions(actions) {
+            const container = document.getElementById('actionsList');
+            container.innerHTML = '';
+            
+            const cats = {
+                'Transport': { icon: '🚗', actions: [] },
+                'Home': { icon: '🏠', actions: [] },
+                'Food': { icon: '🍽️', actions: [] },
+                'Digital': { icon: '💻', actions: [] },
+                'Consumption': { icon: '🛍️', actions: [] }
+            };
+            
+            actions.forEach(a => {
+                if (cats[a.Category]) cats[a.Category].actions.push(a);
+            });
+            
+            Object.keys(cats).forEach(name => {
+                const cat = cats[name];
+                if (cat.actions.length === 0) return;
+                
+                const section = document.createElement('div');
+                section.className = 'action-category';
+                section.innerHTML = '<h3>' + cat.icon + ' ' + name + '</h3>';
+                
+                const list = document.createElement('div');
+                list.className = 'action-list';
+                
+                cat.actions.forEach(a => {
+                    const item = document.createElement('div');
+                    item.className = 'action-item';
+                    item.onclick = function() { toggleAction(a.ActionID); };
+                    
+                    item.innerHTML = '<input type="checkbox" class="action-checkbox" id="action-' + a.ActionID + '">' +
+                        '<div class="action-details"><div class="action-name">' + a.ActionName + '</div>' +
+                        '<div class="action-meta">' +
+                        '<span class="action-impact">-' + a.BaseImpact_kg + ' kg/yr</span>' +
+                        '<span class="action-cost">💰 ' + a.costLabel + '</span>' +
+                        '<span class="action-difficulty">📊 ' + a.Difficulty + '</span>' +
+                        '<span class="action-time">⏱️ ' + a.TimeToImplement + '</span>' +
+                        '</div></div>';
+                    
+                    list.appendChild(item);
+                });
+                
+                section.appendChild(list);
+                container.appendChild(section);
+            });
+        }
+
+        function toggleAction(id) {
+            const cb = document.getElementById('action-' + id);
+            const item = cb.closest('.action-item');
+            
+            if (selectedActionIDs.indexOf(id) >= 0) {
+                selectedActionIDs = selectedActionIDs.filter(x => x !== id);
+                item.classList.remove('selected');
+                cb.checked = false;
+            } else {
+                selectedActionIDs.push(id);
+                item.classList.add('selected');
+                cb.checked = true;
+            }
+            
+            calculateImpactRealTime();
+        }
+
+        function calculateImpactRealTime() {
+            if (selectedActionIDs.length === 0) {
+                updateLiveFeedback();
+                return;
+            }
+            
+            htmlComponent.sendEventToMATLAB("CalculateActionImpact", {
+                region: document.getElementById('region').value,
+                currentFootprint: currentFootprint,
+                selectedActionIDs: selectedActionIDs,
+                allActions: availableActions
+            });
+        }
+
+        function handleImpactCalculated(event) {
+            impactData = event.Data;
+            updateLiveFeedback(impactData);
+        }
+
+        function updateLiveFeedback(impact) {
+            document.getElementById('currentTotal').textContent = currentFootprint.totalTons.toFixed(1) + ' tons';
+            
+            if (impact && impact.totalReduction > 0) {
+                document.getElementById('projectedTotal').textContent = impact.newTotal.toFixed(1) + ' tons';
+                document.getElementById('reductionAmount').textContent = '-' + (impact.totalReduction / 1000).toFixed(1) + 
+                    ' tons (' + impact.reductionPercent.toFixed(0) + '%)';
+                
+                let status;
+                if (impact.parisStatus === 'aligned') {
+                    status = 'Paris: <strong style="color:#A5D6A7;">✓ On Track!</strong>';
+                } else if (impact.parisStatus === 'close') {
+                    status = 'Paris: <strong style="color:#FFF59D;">⚠ Close</strong>';
+                } else {
+                    status = 'Paris: <strong style="color:#FFCDD2;">Above Target</strong>';
+                }
+                document.getElementById('parisMini').innerHTML = '<span class="paris-indicator">' + status + '</span>';
+            } else {
+                document.getElementById('projectedTotal').textContent = currentFootprint.totalTons.toFixed(1) + ' tons';
+                document.getElementById('reductionAmount').textContent = '0.0 tons (0%)';
+                document.getElementById('parisMini').innerHTML = '<span class="paris-indicator">Select actions</span>';
+            }
+        }
+
+        // ===== Phase 4 =====
+        function viewSummary() {
+            if (selectedActionIDs.length === 0) {
+                showError('Select at least one action');
+                return;
+            }
+            
+            showLoading(true);
+            
+            const selected = availableActions.filter(a => selectedActionIDs.indexOf(a.ActionID) >= 0);
+            
+            htmlComponent.sendEventToMATLAB("GenerateSummary", {
+                currentFootprint: currentFootprint,
+                impact: impactData,
+                selectedActions: selected,
+                region: document.getElementById('region').value
+            });
+        }
+
+        function handleSummaryGenerated(event) {
+            displaySummary(event.Data);
+            unlockTab(4);
+            switchTab(4);
+            showLoading(false);
+        }
+
+        function displaySummary(summary) {
+            const max = Math.max(currentFootprint.totalTons, impactData.newTotal);
+            const beforeW = (currentFootprint.totalTons / max) * 100;
+            const afterW = (impactData.newTotal / max) * 100;
+            
+            document.getElementById('beforeBar').style.width = beforeW + '%';
+            document.getElementById('afterBar').style.width = afterW + '%';
+            document.getElementById('beforeLabel').textContent = currentFootprint.totalTons.toFixed(1) + ' tons';
+            document.getElementById('afterLabel').textContent = impactData.newTotal.toFixed(1) + ' tons';
+            
+            createWaterfallChart();
+            document.getElementById('summaryText').textContent = summary;
+        }
+
+        function createWaterfallChart() {
+            const container = document.getElementById('waterfallChart');
+            container.innerHTML = '';
+            
+            if (!impactData || !impactData.actionDetails) return;
+            
+            const sorted = impactData.actionDetails.slice().sort((a, b) => b.impact - a.impact);
+            const maxImpact = sorted[0].impact;
+            
+            sorted.forEach(a => {
+                const width = (a.impact / maxImpact) * 100;
+                const item = document.createElement('div');
+                item.className = 'waterfall-item';
+                item.innerHTML = '<div class="waterfall-label">' + a.name + '</div>' +
+                    '<div class="waterfall-bar-container">' +
+                    '<div class="waterfall-bar" style="width:' + width + '%"></div>' +
+                    '<div class="waterfall-value">-' + a.impact.toFixed(0) + ' kg</div></div>';
+                container.appendChild(item);
+            });
+        }
+
+        // ===== Reset =====
+        function resetApp() {
+            if (!confirm('Reset all data?')) return;
+            htmlComponent.sendEventToMATLAB("ResetApp", {});
+        }
+
+        function handleAppReset() {
+            currentPhase = 1;
+            currentFootprint = null;
+            availableActions = [];
+            selectedActionIDs = [];
+            impactData = null;
+            
+            for (let i = 2; i <= 4; i++) {
+                document.getElementById('tab' + i).setAttribute('data-unlocked', 'false');
+            }
+            
+            document.querySelectorAll('.action-checkbox').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.action-item').forEach(item => item.classList.remove('selected'));
+            
+            setDefaultValues();
+            updateProgress();
+            switchTab(1);
+        }
+
+        // ===== Utilities =====
+        function showLoading(show) {
+            document.getElementById('loading').classList.toggle('active', show);
+        }
+
+        function showError(msg) {
+            const div = document.getElementById('errorMessage');
+            div.textContent = msg;
+            div.classList.add('active');
+            setTimeout(() => div.classList.remove('active'), 5000);
+        }
+
+        function handleError(event) {
+            console.error("Error:", event.Data);
+            showError(event.Data.message || 'An error occurred');
+            showLoading(false);
+        }
+
+        console.log("Carbon Action Tracker loaded");
+    </script>
+</body>
+</html>

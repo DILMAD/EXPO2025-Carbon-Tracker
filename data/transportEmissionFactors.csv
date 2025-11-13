@@ -1,0 +1,54 @@
+Transport_Mode,Vehicle_Type,Region,Unit,CO2e_Factor_g_per_unit,Source,Year,Notes
+Car_Gasoline,Small,Global,km,109,DEFRA_2024,2024,Average small petrol car (<1.4L engine)
+Car_Gasoline,Medium,Global,km,170,DEFRA_2024,2024,Average medium petrol car (1.4-2.0L)
+Car_Gasoline,Large,Global,km,214,DEFRA_2024,2024,Average large petrol car (>2.0L)
+Car_Gasoline,Average,Global,km,164,DEFRA_2024,2024,UK fleet average
+Car_Gasoline,Average,USA,km,192,EPA_2024,2024,US fleet average - larger vehicles
+Car_Gasoline,Average,Europe,km,155,EMEP_EEA_2020,2020,European fleet average
+Car_Gasoline,Average,Asia,km,145,IEA_Transport_2024,2024,Asian fleet average - smaller vehicles
+Car_Diesel,Small,Global,km,110,DEFRA_2024,2024,Average small diesel car
+Car_Diesel,Medium,Global,km,153,DEFRA_2024,2024,Average medium diesel car
+Car_Diesel,Large,Global,km,185,DEFRA_2024,2024,Average large diesel car
+Car_Diesel,Average,Global,km,149,DEFRA_2024,2024,UK fleet average
+Car_Diesel,Average,Europe,km,138,EMEP_EEA_2020,2020,European fleet average - higher diesel adoption
+Car_Hybrid,Average,Global,km,110,DEFRA_2024,2024,Hybrid electric vehicle (HEV) - combined
+Car_Hybrid,Average,USA,km,115,EPA_2024,2024,US hybrid fleet average
+Car_Hybrid,Average,Asia,km,105,IEA_Transport_2024,2024,Asian hybrid fleet - efficient models
+Car_Plugin_Hybrid,Average,Global,km,78,DEFRA_2024,2024,PHEV - mixed electric/gasoline operation
+Car_Electric_BEV,Average,Global,km,53,DEFRA_2024,2024,Battery electric - UK grid mix (384 gCO2/kWh)
+Car_Electric_BEV,Average,USA,km,90,EPA_2024,2024,US grid average (higher coal share historically)
+Car_Electric_BEV,Average,Europe,km,50,EMEP_EEA_2020,2020,EU grid average (cleaner mix)
+Car_Electric_BEV,Average,Norway,km,5,Ember_2025,2025,Norway grid (30 gCO2/kWh - hydro-dominated)
+Car_Electric_BEV,Average,China,km,110,IEA_Transport_2024,2024,China grid (coal-heavy)
+Car_Electric_BEV,Average,India,km,140,IEA_Transport_2024,2024,India grid (708 gCO2/kWh)
+Motorcycle,Average,Global,km,113,DEFRA_2024,2024,Average motorcycle/scooter
+Motorcycle,Small,Asia,km,65,IEA_Transport_2024,2024,Small scooters/bikes common in Asia
+Bus,Local_Urban_Diesel,Global,passenger-km,103,DEFRA_2024,2024,Local bus service - average occupancy
+Bus,Local_Urban_Diesel,USA,passenger-km,150,EPA_2024,2024,US urban bus - lower occupancy
+Bus,Local_Urban_Diesel,Europe,passenger-km,95,EMEP_EEA_2020,2020,European urban bus
+Bus,Local_Urban_Diesel,Asia,passenger-km,85,IEA_Transport_2024,2024,Asian urban bus - higher occupancy
+Bus,Coach_Intercity,Global,passenger-km,27,DEFRA_2024,2024,Long-distance coach - high occupancy
+Bus,Electric,Global,passenger-km,43,DEFRA_2024,2024,Electric bus - UK grid mix
+Bus,Electric,China,passenger-km,70,IEA_Transport_2024,2024,Electric bus - China grid
+Train_Rail,National_Diesel,Global,passenger-km,41,DEFRA_2024,2024,Diesel train - national rail
+Train_Rail,National_Electric,Global,passenger-km,35,DEFRA_2024,2024,Electric train - UK grid mix
+Train_Rail,National_Electric,Europe,passenger-km,28,EMEP_EEA_2020,2020,European electric rail - cleaner grid
+Train_Rail,Intercity_HSR,Global,passenger-km,6,DEFRA_2024,2024,High-speed rail (electric) - very efficient
+Train_Rail,Light_Metro,Global,passenger-km,33,DEFRA_2024,2024,Urban metro/subway - electric
+Train_Rail,Tram,Global,passenger-km,29,DEFRA_2024,2024,Electric tram
+Aviation,Domestic_Short,Global,passenger-km,255,DEFRA_2024,2024,Flights <500km - includes radiative forcing
+Aviation,Domestic_Medium,Global,passenger-km,156,DEFRA_2024,2024,Flights 500-1600km
+Aviation,International_Long,Global,passenger-km,147,DEFRA_2024,2024,Flights >1600km - more efficient
+Aviation,Domestic_Short,USA,passenger-km,275,EPA_2024,2024,US domestic short-haul
+Aviation,Domestic_Medium,USA,passenger-km,170,EPA_2024,2024,US domestic medium-haul
+Aviation,International_Long,USA,passenger-km,150,EPA_2024,2024,US international long-haul
+Aviation,Regional_Asia,Asia,passenger-km,165,IEA_Transport_2024,2024,Asian regional flights
+Aviation,Business_Class,Global,passenger-km,429,DEFRA_2024,2024,Business class - 2.75x economy (space allocation)
+Aviation,First_Class,Global,passenger-km,588,DEFRA_2024,2024,First class - 4x economy (space allocation)
+Ferry_Boat,Passenger_Ferry,Global,passenger-km,115,DEFRA_2024,2024,Foot passenger ferry
+Ferry_Boat,Car_Ferry,Global,passenger-km,130,DEFRA_2024,2024,Ferry with vehicles
+Taxi_Rideshare,Regular,Global,passenger-km,200,DEFRA_2024,2024,Traditional taxi - often idling
+Taxi_Rideshare,Shared,Global,passenger-km,100,DEFRA_2024,2024,Rideshare with 50% occupancy
+Walking,N/A,Global,passenger-km,0,IPCC_AR6,2022,Zero emissions
+Cycling,Traditional,Global,passenger-km,0,IPCC_AR6,2022,Zero operational emissions
+Cycling,E-bike,Global,passenger-km,8,DEFRA_2024,2024,E-bike - includes battery charging

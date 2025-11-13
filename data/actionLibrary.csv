@@ -1,0 +1,51 @@
+ActionID,Category,ActionName,Description,BaseImpact_kg,CostCategory,Difficulty,TimeToImplement,ApplicableClimates,MinGridIntensity,MaxGridIntensity,RequiresInfrastructure
+1,Transport,Switch to Electric Vehicle (BEV),Replace gasoline car with battery electric vehicle,1800,High,Medium,1-3 months,All,0,9999,TRUE
+2,Transport,Switch to Plug-in Hybrid (PHEV),Replace gasoline car with plug-in hybrid vehicle,900,High,Medium,1-3 months,All,0,9999,TRUE
+3,Transport,Use Public Transit 3 Days/Week,Replace car commute with bus/train 3 days per week,500,Low,Easy,Immediate,All,0,9999,FALSE
+4,Transport,Use Public Transit 5 Days/Week,Replace car commute with bus/train full time,850,Low,Medium,Immediate,All,0,9999,FALSE
+5,Transport,Bike for Trips Under 5km,Replace short car trips with cycling,300,Low,Easy,Immediate,All,0,9999,FALSE
+6,Transport,Join Carpool 3 Days/Week,Share rides with coworkers 3 days per week,400,Free,Easy,1 month,All,0,9999,FALSE
+7,Transport,Reduce Domestic Flights by 50%,Cut domestic air travel in half,600,Free,Medium,Immediate,All,0,9999,FALSE
+8,Transport,Reduce International Flights by 50%,Cut international air travel in half,1200,Free,Medium,Immediate,All,0,9999,FALSE
+9,Transport,Work from Home 2 Extra Days/Week,Reduce commute by telecommuting,350,Free,Easy,Immediate,All,0,9999,FALSE
+10,Transport,Switch to Hybrid Vehicle,Replace gasoline car with conventional hybrid,500,High,Medium,1-3 months,All,0,9999,TRUE
+11,Transport,Optimize Driving (Eco-Driving),Improve fuel efficiency through driving technique,150,Free,Easy,Immediate,All,0,9999,FALSE
+12,Transport,Maintain Proper Tire Pressure,Reduce fuel consumption through tire maintenance,80,Free,Easy,Immediate,All,0,9999,FALSE
+13,Home,Install Solar Panels (5kW),Residential rooftop solar installation,900,High,Hard,3-6 months,All,200,9999,TRUE
+14,Home,Install Solar Panels (10kW),Large residential rooftop solar installation,1800,High,Hard,3-6 months,All,200,9999,TRUE
+15,Home,Switch to Heat Pump,Replace gas furnace with electric heat pump,1200,High,Hard,3-6 months,"Temperate,Cold",0,9999,TRUE
+16,Home,Improve Home Insulation,Upgrade attic and wall insulation,600,Medium,Medium,1-3 months,"Temperate,Cold",0,9999,FALSE
+17,Home,Install Smart Thermostat,Programmable HVAC optimization,200,Low,Easy,Immediate,All,0,9999,FALSE
+18,Home,Upgrade to LED Lighting,Replace all bulbs with LEDs,120,Low,Easy,Immediate,All,0,9999,FALSE
+19,Home,Upgrade to Energy Star Appliances,Replace old appliances with efficient models,400,High,Medium,1-3 months,All,0,9999,FALSE
+20,Home,Install Double-Pane Windows,Upgrade to energy-efficient windows,500,High,Hard,3-6 months,"Temperate,Cold",0,9999,TRUE
+21,Home,Reduce Heating by 2°C in Winter,Lower thermostat setting,300,Free,Easy,Immediate,"Temperate,Cold",0,9999,FALSE
+22,Home,Reduce Cooling by 2°C in Summer,Raise thermostat setting,250,Free,Easy,Immediate,"Temperate,Tropical",0,9999,FALSE
+23,Home,Install Solar Water Heater,Solar thermal for hot water,350,Medium,Medium,1-3 months,All,0,9999,TRUE
+24,Home,Switch to Green Energy Plan,Purchase renewable electricity from utility,800,Low,Easy,Immediate,All,300,9999,FALSE
+25,Home,Install Home Battery Storage,Battery system for solar or grid optimization,400,High,Hard,3-6 months,All,0,9999,TRUE
+26,Home,Air Dry Clothes Instead of Dryer,Eliminate electric dryer usage,150,Free,Easy,Immediate,All,0,9999,FALSE
+27,Food,One Meat-Free Day Per Week (Meatless Monday),Reduce meat consumption one day weekly,260,Free,Easy,Immediate,All,0,9999,FALSE
+28,Food,Two Meat-Free Days Per Week,Reduce meat consumption two days weekly,520,Free,Easy,Immediate,All,0,9999,FALSE
+29,Food,Switch to Vegetarian Diet,Eliminate all meat and fish,600,Free,Medium,1 month,All,0,9999,FALSE
+30,Food,Switch to Vegan Diet,Eliminate all animal products,800,Free,Hard,1-3 months,All,0,9999,FALSE
+31,Food,Reduce Beef Consumption by 75%,Cut beef to once per month or less,400,Free,Medium,Immediate,All,0,9999,FALSE
+32,Food,Buy Local and Seasonal Produce,Reduce food transportation emissions,180,Low,Easy,Immediate,All,0,9999,FALSE
+33,Food,Reduce Food Waste by 30%,Better meal planning and storage,200,Free,Easy,Immediate,All,0,9999,FALSE
+34,Food,Start Home Composting,Divert organic waste from landfills,120,Low,Easy,Immediate,All,0,9999,FALSE
+35,Digital,Reduce Streaming Quality (HD to SD),Lower video resolution to save bandwidth,35,Free,Easy,Immediate,All,0,9999,FALSE
+36,Digital,Reduce Video Call Usage by 25%,Use audio calls or email when possible,25,Free,Easy,Immediate,All,0,9999,FALSE
+37,Digital,Clean Up Cloud Storage,Delete unused files and photos,15,Free,Easy,Immediate,All,0,9999,FALSE
+38,Digital,Optimize AI Query Usage,Be more intentional with AI assistant usage,20,Free,Easy,Immediate,All,0,9999,FALSE
+39,Digital,Unsubscribe from Unnecessary Emails,Reduce email storage and processing,10,Free,Easy,Immediate,All,0,9999,FALSE
+40,Consumption,Buy Used/Refurbished Electronics,Choose secondhand over new devices,350,Low,Easy,Immediate,All,0,9999,FALSE
+41,Consumption,Repair Electronics Instead of Replace,Fix phones/laptops rather than upgrade,400,Low,Medium,Immediate,All,0,9999,FALSE
+42,Consumption,Reduce Clothing Purchases by 50%,Buy half as many new clothes,200,Free,Medium,Immediate,All,0,9999,FALSE
+43,Consumption,Buy Secondhand Clothing,Choose thrift/vintage over fast fashion,250,Low,Easy,Immediate,All,0,9999,FALSE
+44,Consumption,Choose Quality Over Quantity,Invest in durable long-lasting items,300,Medium,Easy,Immediate,All,0,9999,FALSE
+45,Consumption,Implement "Buy Nothing New" Months,Commit to zero new purchases quarterly,450,Free,Hard,Immediate,All,0,9999,FALSE
+46,Consumption,Borrow or Rent Instead of Buy,Use tool libraries and rental services,180,Low,Easy,Immediate,All,0,9999,FALSE
+47,Consumption,Switch to Reusable Products,Replace single-use with reusable alternatives,90,Low,Easy,Immediate,All,0,9999,FALSE
+48,Consumption,Choose Sustainable Brands,Support companies with low-carbon practices,150,Medium,Easy,Immediate,All,0,9999,FALSE
+49,Consumption,Reduce Packaging Waste,Buy bulk and package-free products,100,Free,Easy,Immediate,All,0,9999,FALSE
+50,Consumption,Cancel Unused Subscriptions,Eliminate subscription services you don't use,60,Free,Easy,Immediate,All,0,9999,FALSE

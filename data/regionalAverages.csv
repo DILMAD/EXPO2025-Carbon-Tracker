@@ -1,0 +1,40 @@
+Region,GridIntensity_gCO2_per_kWh,PerCapita_Total_Tons,Transport_Percent,Home_Percent,DominantGridSource,PrimaryTransportMode,ClimateZone,Population_Millions
+USA,384,15.5,31,27,Natural Gas & Coal,Private Car,Temperate,331
+Europe,230,6.8,28,32,Mixed (Gas/Renewables),Mixed (Car/Transit),Temperate,448
+China,550,8.0,25,38,Coal,Mixed (Transit/Car),Temperate,1412
+India,708,1.9,12,35,Coal,Motorcycle/Bus,Tropical,1380
+Brazil,103,2.2,40,15,Hydropower,Car/Bus,Tropical,213
+Canada,120,15.2,35,28,Hydropower,Private Car,Cold,38
+Australia,670,16.8,38,25,Coal,Private Car,Temperate,26
+Japan,482,8.7,22,30,Mixed (Gas/Coal),Rail/Car,Temperate,125
+South_Korea,420,12.3,20,32,Coal/Nuclear,Mixed Transit,Temperate,52
+Mexico,450,3.8,35,22,Mixed (Gas/Oil),Car/Bus,Temperate,129
+Argentina,350,4.5,38,20,Natural Gas,Car/Bus,Temperate,45
+Chile,420,4.9,40,22,Mixed (Coal/Hydro),Car/Bus,Temperate,19
+Norway,30,7.5,45,12,Hydropower,Private Car,Cold,5
+Sweden,41,4.5,38,15,Nuclear/Hydro,Car/Transit,Cold,10
+Germany,213,8.4,28,30,Mixed (Renewables/Coal),Car/Transit,Temperate,83
+France,52,4.6,30,25,Nuclear,Car/Rail,Temperate,67
+UK,230,5.2,32,28,Natural Gas/Wind,Car/Transit,Temperate,68
+Spain,190,5.3,35,25,Mixed (Gas/Renewables),Car,Temperate,47
+Italy,280,5.5,32,28,Natural Gas,Car,Temperate,60
+Poland,662,8.3,25,38,Coal,Car,Temperate,38
+Russia,450,11.5,28,35,Natural Gas,Car/Metro,Cold,144
+Turkey,480,5.2,30,30,Coal/Gas,Car/Bus,Temperate,84
+Saudi_Arabia,650,19.3,42,30,Oil,Private Car,Hot_Arid,35
+UAE,490,23.3,38,35,Natural Gas,Private Car,Hot_Arid,10
+South_Africa,950,7.8,35,32,Coal,Car/Minibus,Temperate,60
+Egypt,500,2.5,28,30,Natural Gas,Car/Bus,Hot_Arid,102
+Nigeria,600,0.6,32,25,Gas/Oil,Bus/Motorcycle,Tropical,206
+Kenya,350,0.4,25,20,Geothermal/Hydro,Bus/Motorcycle,Tropical,54
+Thailand,480,3.8,30,28,Natural Gas,Motorcycle/Car,Tropical,70
+Vietnam,520,3.5,22,35,Coal,Motorcycle,Tropical,98
+Indonesia,700,2.6,25,30,Coal,Motorcycle,Tropical,274
+Philippines,680,1.3,28,28,Coal,Jeepney/Motorcycle,Tropical,110
+Malaysia,620,8.1,35,30,Coal/Gas,Car/Motorcycle,Tropical,33
+Singapore,380,8.3,15,35,Natural Gas,Public Transit,Tropical,6
+New_Zealand,120,7.1,42,18,Hydropower/Geothermal,Private Car,Temperate,5
+Colombia,180,1.9,35,18,Hydropower,Car/Bus,Tropical,51
+Peru,260,2.0,38,20,Hydropower/Gas,Bus/Car,Tropical,33
+Venezuela,310,5.8,40,25,Hydropower/Oil,Car/Bus,Tropical,28
+Global,473,4.7,24,28,Mixed,Mixed,Mixed,7900

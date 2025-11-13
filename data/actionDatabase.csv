@@ -1,0 +1,53 @@
+Category,Action,Description,Reduction_Percent,Reduction_Type,Cost_USD,Payback_Years,Applicability_Regions,Applicability_Conditions,Constraints,Difficulty,Co_Benefits
+Transport,Switch_Commute_Walk_Bike,Walk or bike for commute under 5km,100,commute,0,0,All,Commute < 5km,Weather_Safe_Routes,Easy,Health_Fitness_Air_Quality
+Transport,Switch_Commute_Public_Transit,Use bus/train instead of car,75,commute,600,1,Urban_Areas,Good_Transit_Available,None,Easy,Cost_Savings_Productivity
+Transport,Switch_Commute_Carpool,Share rides 3+ days/week,50,commute,0,0,All,Flexible_Schedule,Coordination,Easy,Social_Cost_Savings
+Transport,Switch_To_EV,Replace gasoline car with electric,60,commute,35000,8,All,Charging_Available,Grid_Must_Be_Clean,Medium,Lower_Maintenance
+Transport,Switch_To_Hybrid,Replace gasoline car with hybrid,30,commute,8000,5,All,None,None,Easy,Fuel_Savings
+Transport,Switch_To_Efficient_Car,Downsize to fuel-efficient model,25,commute,5000,4,All,None,None,Easy,Fuel_Savings
+Transport,Remote_Work_2_Days,Work from home 2 days/week,40,commute,0,0,All,Job_Allows_Remote,None,Easy,Work_Life_Balance
+Transport,Remote_Work_Full,Work from home full-time,100,commute,0,0,All,Job_Allows_Remote,None,Medium,Work_Life_Balance_Commute_Time
+Transport,Reduce_Flights_50_Percent,Cut air travel by half,50,flights,0,0,All,None,None,Medium,Cost_Savings
+Transport,Offset_One_Flight,Use train/bus for one annual flight,10,flights,0,0,Europe_Asia,HSR_Available,None,Easy,Scenic_Travel
+Transport,Eliminate_Short_Flights,No flights under 500km,30,flights,0,0,Europe_Asia,HSR_Available,None,Easy,Comfort_Productivity
+Transport,Video_Conference_Instead,Replace business travel with video calls,25,flights,0,0,All,Job_Flexibility,None,Easy,Time_Savings_Productivity
+Home,Install_Solar_Panels,Rooftop solar (5kW system),40,electricity,15000,8,Sunny_Regions,Own_Home_Suitable_Roof,None,Hard,Energy_Independence
+Home,Add_Battery_Storage,Home battery (10kWh),25,electricity,10000,10,All,Have_Solar,Solar_Panels,Hard,Backup_Power_Grid_Independence
+Home,Switch_To_Heat_Pump,Replace gas furnace with heat pump,50,heating,8000,6,All,Own_Home,None,Hard,Cooling_Also
+Home,Improve_Insulation,Attic + wall insulation upgrade,30,heating,5000,7,Cold_Temperate,Own_Home,None,Medium,Comfort_Lower_Bills
+Home,Smart_Thermostat,Programmable temperature control,15,heating,200,1,All,None,None,Easy,Comfort_Automation
+Home,LED_Lighting_Full,Replace all bulbs with LED,10,electricity,100,1,All,None,None,Easy,Lower_Bills_Less_Maintenance
+Home,Energy_Efficient_Appliances,Replace old fridge/washer/dryer,20,electricity,3000,5,All,None,None,Medium,Modern_Features
+Home,Solar_Water_Heater,Solar thermal for hot water,25,heating,4000,6,Sunny_Regions,Own_Home,None,Medium,Lower_Gas_Bills
+Home,Window_Upgrades,Double/triple-pane windows,20,heating,6000,10,Cold_Regions,Own_Home,None,Hard,Comfort_Noise_Reduction
+Home,Air_Sealing,Seal leaks around doors/windows,15,heating,500,2,All,Own_Home,None,Easy,Comfort_Lower_Bills
+Home,Green_Energy_Plan,Switch to 100% renewable utility plan,100,electricity,50,0,All,Utility_Offers_Green,None,Easy,Support_Renewables
+Home,Reduce_Heating_2C,Lower thermostat 2°C in winter,10,heating,0,0,All,None,None,Easy,Cost_Savings
+Home,Reduce_Cooling_2C,Raise thermostat 2°C in summer,10,cooling,0,0,Warm_Regions,None,None,Easy,Cost_Savings
+Home,Clothes_Line_Drying,Air dry instead of electric dryer,5,electricity,30,0.1,All,Space_Available,None,Easy,Clothes_Last_Longer
+Food,One_Vegetarian_Day_Week,Meatless Monday (or any day),14,diet,0,0,All,None,None,Easy,Health_Variety
+Food,Two_Vegetarian_Days_Week,Meatless 2 days/week,28,diet,0,0,All,None,None,Easy,Health_Cost_Savings
+Food,Weekday_Vegetarian,Plant-based Mon-Fri,60,diet,0,0,All,None,None,Medium,Health_Cost_Savings
+Food,Full_Vegetarian,Eliminate all meat,52,diet,0,0,All,None,None,Medium,Health_Lower_Food_Cost
+Food,Full_Vegan,Plant-based only,60,diet,0,0,All,None,None,Hard,Health_Ethics
+Food,Replace_Beef_With_Chicken,Switch red meat to poultry,30,diet,0,0,All,None,None,Easy,Health
+Food,Local_Seasonal_Food,Buy local produce in season,10,diet,0,0,All,Farmers_Market_Available,None,Easy,Support_Local_Fresh
+Food,Reduce_Food_Waste,Meal planning + composting,15,diet,50,0.5,All,None,None,Easy,Cost_Savings
+Food,Grow_Own_Vegetables,Home garden (10% of vegetables),5,diet,200,1,All,Yard_Or_Balcony,None,Medium,Fresh_Food_Hobby
+Digital,Reduce_Streaming_Quality,HD instead of 4K,50,streaming,0,0,All,None,None,Easy,Lower_Internet_Bill
+Digital,Reduce_Streaming_Hours,Cut video by 30 minutes/day,25,streaming,0,0,All,None,None,Easy,More_Time
+Digital,Email_Cleanup,Delete old emails + unsubscribe,10,digital,0,0,All,None,None,Easy,Organized_Inbox
+Digital,Reduce_Cloud_Storage,Delete unused files,20,digital,0,0,All,None,None,Easy,Cost_Savings
+Digital,Optimize_Video_Calls,Audio-only when possible,40,digital,0,0,All,None,None,Easy,Less_Fatigue
+Digital,Dark_Mode_Devices,Use dark themes (OLED screens),5,digital,0,0,All,OLED_Screen,None,Easy,Eye_Comfort_Battery
+Digital,Unplug_Devices,Turn off devices when not in use,5,electricity,0,0,All,None,None,Easy,Safety_Lower_Bills
+Consumption,Buy_Used_Instead_New,Thrift/refurbished for 50% purchases,35,consumption,0,0,All,None,None,Easy,Cost_Savings_Unique_Finds
+Consumption,Repair_Instead_Replace,Fix items before buying new,25,consumption,100,0.5,All,None,None,Medium,Skills_Cost_Savings
+Consumption,Rent_Instead_Buy,Tool library/equipment rental,15,consumption,50,0.5,All,Rental_Available,None,Easy,Space_Savings
+Consumption,Quality_Over_Quantity,Buy durable items less frequently,30,consumption,0,0,All,None,None,Easy,Less_Clutter_Better_Quality
+Consumption,Minimize_Fast_Fashion,Buy 50% less clothing,40,clothing,0,0,All,None,None,Easy,Cost_Savings_Wardrobe_Curation
+Consumption,Electronics_Longevity,Keep devices 4+ years,40,electronics,0,0,All,None,None,Easy,Cost_Savings
+Consumption,Refurbished_Electronics,Buy refurbished instead of new,70,electronics,0,0,All,None,None,Easy,Cost_Savings
+Consumption,Furniture_Secondhand,Buy used furniture,80,furniture,0,0,All,None,None,Easy,Cost_Savings_Character
+Consumption,Sharing_Economy,Borrow/share tools + equipment,20,consumption,0,0,All,Community,None,Easy,Social_Connection
+Consumption,Zero_Waste_Shopping,Bulk bins + reusable containers,10,consumption,100,1,All,Store_Available,None,Medium,Less_Plastic_Waste
